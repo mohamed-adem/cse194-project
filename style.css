@@ -1,0 +1,36 @@
+*{
+
+}
+
+header{
+    margin-bottom: 10px;
+}
+
+#svg-holder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#svg5183 {
+    display: block;
+    width: 500px;
+    height: auto;
+}
+
+path {
+    font-size:12px;
+    fill:#d0d0d0;
+    fill-rule:nonzero;
+    stroke:#000000;
+    stroke-width:1;
+    stroke-linecap:butt;
+    stroke-linejoin:bevel;
+    stroke-miterlimit:4;
+    stroke-opacity:1;
+    stroke-dasharray:none;
+    marker-start:none;
+}
+path:hover {
+    fill:rgb(244, 244, 244);
+    cursor: pointer;
+}
