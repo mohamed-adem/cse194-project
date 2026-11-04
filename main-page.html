@@ -359,10 +359,26 @@
             
             <div>
                 <div>
-                start: <br> <input type="date"> <br>
-                end: <br> <input type="date">
+                start: <br> <input 
+                    type="number" 
+                    id="birth-year" 
+                    name="birth-year" 
+                    min="1900" 
+                    max="2026" 
+                    placeholder="YYYY" 
+                    required> <br>
+                end: <br> <input 
+                    type="number" 
+                    id="birth-year" 
+                    name="birth-year" 
+                    min="1900" 
+                    max="2026" 
+                    placeholder="YYYY">
                 </div>
-                <h1>County Name for hover </h1>
+                <div class="county-preview">
+                    <h2 id="county-name">Hover over a county</h2>
+                    <svg id="county-preview-svg"></svg>
+                </div>
                 <select id="county-select">
                     <option value=""> Select a County</option>
                 </select>

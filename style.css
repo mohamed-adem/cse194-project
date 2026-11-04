@@ -47,7 +47,18 @@ path {
     stroke-dasharray:none;
     marker-start:none;
 }
+
 path:hover {
     fill:rgb(244, 244, 244);
     cursor: pointer;
+}
+
+.county-preview {
+    width: 250px;
+    text-align: center;
+}
+
+#county-preview-svg {
+    width: 200px;
+    height: 200px;
 }
