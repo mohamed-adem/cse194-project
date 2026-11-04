@@ -1,3 +1,21 @@
+:root {
+    --low: #2ae727;
+    --med: #ffeb10;
+    --high: #fd0606;
+}
+
+.low {
+    fill: var(--low);
+}
+
+.med {
+    fill: var(--med);
+}
+
+.high {
+    fill: var(--high);
+}
+
 *{
 
 }
@@ -12,14 +30,13 @@ header{
     align-items: center;
 }
 #svg5183 {
-    display: block;
-    width: 500px;
+    width: 400px;
     height: auto;
 }
 
 path {
     font-size:12px;
-    fill:#d0d0d0;
+    fill:#b1b1b1;
     fill-rule:nonzero;
     stroke:#000000;
     stroke-width:1;
