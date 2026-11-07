@@ -1,0 +1,1132 @@
+{
+  "completeCountyPairsByYear": {
+    "2000": 29,
+    "2001": 35,
+    "2002": 35,
+    "2003": 38,
+    "2004": 38,
+    "2005": 42,
+    "2006": 43,
+    "2007": 46,
+    "2008": 55,
+    "2009": 55,
+    "2010": 54,
+    "2011": 55,
+    "2012": 55,
+    "2013": 56,
+    "2014": 56,
+    "2015": 56,
+    "2016": 57,
+    "2017": 58,
+    "2018": 58,
+    "2019": 58,
+    "2020": 57,
+    "2021": 58,
+    "2022": 58,
+    "2023": 58,
+    "2024": 58
+  },
+  "allCountyYears": [
+    2017,
+    2018,
+    2019,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "missingHousingCountyYears": [
+    {
+      "fips": "06003",
+      "name": "Alpine",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06003",
+      "name": "Alpine",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06003",
+      "name": "Alpine",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06003",
+      "name": "Alpine",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06003",
+      "name": "Alpine",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06003",
+      "name": "Alpine",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06003",
+      "name": "Alpine",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06003",
+      "name": "Alpine",
+      "year": 2007,
+      "availableMonths": 9
+    },
+    {
+      "fips": "06005",
+      "name": "Amador",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06005",
+      "name": "Amador",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06005",
+      "name": "Amador",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06005",
+      "name": "Amador",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06005",
+      "name": "Amador",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06007",
+      "name": "Butte",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06009",
+      "name": "Calaveras",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06009",
+      "name": "Calaveras",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06009",
+      "name": "Calaveras",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06009",
+      "name": "Calaveras",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06009",
+      "name": "Calaveras",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06011",
+      "name": "Colusa",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06011",
+      "name": "Colusa",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06011",
+      "name": "Colusa",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06011",
+      "name": "Colusa",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06011",
+      "name": "Colusa",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06011",
+      "name": "Colusa",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06011",
+      "name": "Colusa",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06011",
+      "name": "Colusa",
+      "year": 2007,
+      "availableMonths": 11
+    },
+    {
+      "fips": "06013",
+      "name": "Contra Costa",
+      "year": 2007,
+      "availableMonths": 11
+    },
+    {
+      "fips": "06015",
+      "name": "Del Norte",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06015",
+      "name": "Del Norte",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06015",
+      "name": "Del Norte",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06015",
+      "name": "Del Norte",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06015",
+      "name": "Del Norte",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06015",
+      "name": "Del Norte",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06015",
+      "name": "Del Norte",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06015",
+      "name": "Del Norte",
+      "year": 2007,
+      "availableMonths": 11
+    },
+    {
+      "fips": "06021",
+      "name": "Glenn",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06021",
+      "name": "Glenn",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06021",
+      "name": "Glenn",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06021",
+      "name": "Glenn",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06021",
+      "name": "Glenn",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06021",
+      "name": "Glenn",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06021",
+      "name": "Glenn",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06021",
+      "name": "Glenn",
+      "year": 2007,
+      "availableMonths": 11
+    },
+    {
+      "fips": "06023",
+      "name": "Humboldt",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06025",
+      "name": "Imperial",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06025",
+      "name": "Imperial",
+      "year": 2012,
+      "availableMonths": 11
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2007,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2008,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2009,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2010,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2011,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2012,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2013,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2014,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06027",
+      "name": "Inyo",
+      "year": 2015,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06031",
+      "name": "Kings",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06033",
+      "name": "Lake",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06033",
+      "name": "Lake",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06033",
+      "name": "Lake",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06033",
+      "name": "Lake",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06033",
+      "name": "Lake",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06033",
+      "name": "Lake",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06033",
+      "name": "Lake",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06035",
+      "name": "Lassen",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06035",
+      "name": "Lassen",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06035",
+      "name": "Lassen",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06035",
+      "name": "Lassen",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06035",
+      "name": "Lassen",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06035",
+      "name": "Lassen",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06035",
+      "name": "Lassen",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06039",
+      "name": "Madera",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06039",
+      "name": "Madera",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06039",
+      "name": "Madera",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06043",
+      "name": "Mariposa",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06043",
+      "name": "Mariposa",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06043",
+      "name": "Mariposa",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06043",
+      "name": "Mariposa",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06043",
+      "name": "Mariposa",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06043",
+      "name": "Mariposa",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06043",
+      "name": "Mariposa",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06043",
+      "name": "Mariposa",
+      "year": 2020,
+      "availableMonths": 10
+    },
+    {
+      "fips": "06045",
+      "name": "Mendocino",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06045",
+      "name": "Mendocino",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06045",
+      "name": "Mendocino",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06047",
+      "name": "Merced",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06047",
+      "name": "Merced",
+      "year": 2004,
+      "availableMonths": 11
+    },
+    {
+      "fips": "06049",
+      "name": "Modoc",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06049",
+      "name": "Modoc",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06049",
+      "name": "Modoc",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06049",
+      "name": "Modoc",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06049",
+      "name": "Modoc",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06049",
+      "name": "Modoc",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06049",
+      "name": "Modoc",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06049",
+      "name": "Modoc",
+      "year": 2007,
+      "availableMonths": 8
+    },
+    {
+      "fips": "06051",
+      "name": "Mono",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06051",
+      "name": "Mono",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06051",
+      "name": "Mono",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06051",
+      "name": "Mono",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06051",
+      "name": "Mono",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06051",
+      "name": "Mono",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06051",
+      "name": "Mono",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06051",
+      "name": "Mono",
+      "year": 2007,
+      "availableMonths": 11
+    },
+    {
+      "fips": "06057",
+      "name": "Nevada",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06057",
+      "name": "Nevada",
+      "year": 2010,
+      "availableMonths": 11
+    },
+    {
+      "fips": "06063",
+      "name": "Plumas",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06063",
+      "name": "Plumas",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06063",
+      "name": "Plumas",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06063",
+      "name": "Plumas",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06063",
+      "name": "Plumas",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06063",
+      "name": "Plumas",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06063",
+      "name": "Plumas",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06069",
+      "name": "San Benito",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06069",
+      "name": "San Benito",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06069",
+      "name": "San Benito",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06091",
+      "name": "Sierra",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06091",
+      "name": "Sierra",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06091",
+      "name": "Sierra",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06091",
+      "name": "Sierra",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06091",
+      "name": "Sierra",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06091",
+      "name": "Sierra",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06091",
+      "name": "Sierra",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06091",
+      "name": "Sierra",
+      "year": 2007,
+      "availableMonths": 5
+    },
+    {
+      "fips": "06093",
+      "name": "Siskiyou",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06093",
+      "name": "Siskiyou",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06093",
+      "name": "Siskiyou",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06093",
+      "name": "Siskiyou",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06093",
+      "name": "Siskiyou",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06093",
+      "name": "Siskiyou",
+      "year": 2005,
+      "availableMonths": 11
+    },
+    {
+      "fips": "06101",
+      "name": "Sutter",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06101",
+      "name": "Sutter",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06101",
+      "name": "Sutter",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06101",
+      "name": "Sutter",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06103",
+      "name": "Tehama",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06103",
+      "name": "Tehama",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06103",
+      "name": "Tehama",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06103",
+      "name": "Tehama",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06103",
+      "name": "Tehama",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06103",
+      "name": "Tehama",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06103",
+      "name": "Tehama",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06103",
+      "name": "Tehama",
+      "year": 2007,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06103",
+      "name": "Tehama",
+      "year": 2008,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06103",
+      "name": "Tehama",
+      "year": 2009,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06103",
+      "name": "Tehama",
+      "year": 2010,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06103",
+      "name": "Tehama",
+      "year": 2011,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06105",
+      "name": "Trinity",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06105",
+      "name": "Trinity",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06105",
+      "name": "Trinity",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06105",
+      "name": "Trinity",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06105",
+      "name": "Trinity",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06105",
+      "name": "Trinity",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06105",
+      "name": "Trinity",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06105",
+      "name": "Trinity",
+      "year": 2007,
+      "availableMonths": 9
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2004,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2005,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2006,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2007,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2008,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2009,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2010,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2011,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2012,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2013,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2014,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2015,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06109",
+      "name": "Tuolumne",
+      "year": 2016,
+      "availableMonths": 11
+    },
+    {
+      "fips": "06115",
+      "name": "Yuba",
+      "year": 2000,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06115",
+      "name": "Yuba",
+      "year": 2001,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06115",
+      "name": "Yuba",
+      "year": 2002,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06115",
+      "name": "Yuba",
+      "year": 2003,
+      "availableMonths": 0
+    },
+    {
+      "fips": "06115",
+      "name": "Yuba",
+      "year": 2004,
+      "availableMonths": 0
+    }
+  ]
+}
