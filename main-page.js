@@ -39,7 +39,8 @@ function showCountyValues(path) {
 
 document.addEventListener("appstatechange", event => {
     const { startYear, endYear } = event.detail;
-    if (startYear === undefined || endYear === undefined) return;
+    if (startYear === yearRange.startYear && endYear === yearRange.endYear) return;
+    if (startYear === null || endYear === null) return;
     yearRange = { startYear, endYear };
     restoreSelectedPreview();
 });

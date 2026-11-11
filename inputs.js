@@ -1,8 +1,16 @@
 // Input handling for the main page (Gantt 3.2.3).
-// Validates the year inputs and, whenever they hold a valid value, announces it with
-//   document "appstatechange" event, detail: {mode, startYear, endYear}
-// Invalid input shows an error and never changes what the map displays.
+// Owns the single source of truth for what the user has chosen:
+//   window.AppState.get() -> {county, mode, startYear, endYear}
+// and announces every change with
+//   document "appstatechange" event, detail: the same frozen state object.
+// Invalid input shows an error and never changes the state.
 (function () {
+    const appState = AppStateUtils.createAppState(
+        { county: null, mode: "single", startYear: null, endYear: null },
+        state => document.dispatchEvent(new CustomEvent("appstatechange", { detail: state }))
+    );
+    window.AppState = Object.freeze({ get: () => appState.get() });
+
     const startInput = document.getElementById("start-year");
     const endInput = document.getElementById("end-year");
     const endGroup = document.getElementById("end-year-group");
@@ -38,9 +46,7 @@
             return;
         }
         showErrors({}, mode);
-        document.dispatchEvent(new CustomEvent("appstatechange", {
-            detail: { mode: result.mode, startYear: result.startYear, endYear: result.endYear },
-        }));
+        appState.update({ mode: result.mode, startYear: result.startYear, endYear: result.endYear });
     }
 
     function onModeChange() {
@@ -112,11 +118,14 @@
     countyInput.addEventListener("change", applyCountySearch);
     countyInput.addEventListener("search", applyCountySearch);
 
-    // Keep the box in sync when the county is (un)selected on the map.
+    // The map reports every (un)selection, whether it came from a click or from
+    // this search box, so this is the one place the county enters the state.
     document.addEventListener("countyselected", event => {
-        const county = event.detail.fips && window.CountyData && window.CountyData.byFips[event.detail.fips];
+        const fips = event.detail.fips;
+        const county = fips && window.CountyData && window.CountyData.byFips[fips];
         countyInput.value = county ? county.name : "";
         showCountyError("");
+        appState.update({ county: fips });
     });
 
     if (window.CountyData) {
