@@ -1,4 +1,7 @@
-const { parseYear, validateYears } = require('../js/validation.js');
+const path = require('path');
+const { parseYear, validateYears, matchCountyName } = require('../js/validation.js');
+const data = require(path.join(__dirname, '..', 'data', 'county-data.json'));
+const countyNames = Object.values(data.counties).map(c => c.name);
 
 const years = Array.from({ length: 25 }, (_, i) => 2000 + i); // 2000..2024
 
@@ -59,5 +62,45 @@ describe('validateYears', () => {
 
   test('throws on an unknown mode', () => {
     expect(() => validateYears({ mode: 'decade', start: '2010' }, years)).toThrow();
+  });
+});
+
+describe('matchCountyName', () => {
+  test('matches exact names case-insensitively', () => {
+    expect(matchCountyName('san diego', countyNames)).toEqual({ ok: true, name: 'San Diego' });
+    expect(matchCountyName('  LOS   ANGELES ', countyNames)).toEqual({ ok: true, name: 'Los Angeles' });
+  });
+
+  test('accepts an optional "County" suffix', () => {
+    expect(matchCountyName('Kern County', countyNames)).toEqual({ ok: true, name: 'Kern' });
+  });
+
+  test('uses the real spelling of San Francisco', () => {
+    expect(matchCountyName('san francisco', countyNames)).toEqual({ ok: true, name: 'San Francisco' });
+  });
+
+  test('accepts a unique prefix', () => {
+    expect(matchCountyName('san d', countyNames)).toEqual({ ok: true, name: 'San Diego' });
+  });
+
+  test('exact match wins over a longer prefix match', () => {
+    const names = ['Mono', 'Monomania'];
+    expect(matchCountyName('mono', names)).toEqual({ ok: true, name: 'Mono' });
+  });
+
+  test('reports ambiguous prefixes', () => {
+    const result = matchCountyName('san', countyNames);
+    expect(result.ok).toBe(false);
+    expect(result.error).toMatch(/More than one county/);
+  });
+
+  test('reports unknown names', () => {
+    const result = matchCountyName('Gotham', countyNames);
+    expect(result.ok).toBe(false);
+    expect(result.error).toContain('Gotham');
+  });
+
+  test('empty input means no county', () => {
+    expect(matchCountyName('   ', countyNames)).toEqual({ ok: true, name: null });
   });
 });

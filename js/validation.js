@@ -47,7 +47,31 @@
         return { ok: true, mode, startYear: startResult.value, endYear: endResult.value };
     }
 
-    const api = { parseYear, validateYears };
+    const normalizeName = text =>
+        String(text).trim().toLowerCase().replace(/\s+/g, " ").replace(/ county$/, "");
+
+    // Matches typed text to one county name (case-insensitive; "County" suffix optional).
+    // An exact match wins; otherwise a unique prefix match is accepted ("san d" -> San Diego).
+    // Returns {ok: true, name} | {ok: true, name: null} for empty input |
+    //         {ok: false, error}.
+    function matchCountyName(raw, names) {
+        const text = normalizeName(raw === undefined || raw === null ? "" : raw);
+        if (text === "") return { ok: true, name: null };
+
+        const exact = names.find(name => normalizeName(name) === text);
+        if (exact) return { ok: true, name: exact };
+
+        const prefixMatches = names.filter(name => normalizeName(name).startsWith(text));
+        if (prefixMatches.length === 1) return { ok: true, name: prefixMatches[0] };
+        if (prefixMatches.length > 1) {
+            const shown = prefixMatches.slice(0, 5).join(", ");
+            const ending = prefixMatches.length > 5 ? ", ..." : ".";
+            return { ok: false, error: `More than one county matches: ${shown}${ending}` };
+        }
+        return { ok: false, error: `No California county named "${String(raw).trim()}".` };
+    }
+
+    const api = { parseYear, validateYears, matchCountyName };
     if (typeof module !== "undefined" && module.exports) {
         module.exports = api;
     } else {

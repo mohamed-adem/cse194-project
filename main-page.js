@@ -1,24 +1,4 @@
-const countySelect = document.getElementById("county-select");
-
-
 const countyPaths = document.querySelectorAll("#svg-holder svg path[id]");
-
-
-const counties = Array.from(countyPaths).map(path => ({
-    name: path.id
-}));
-
-counties.sort((a, b) => a.name.localeCompare(b.name));
-
-counties.forEach(county => {
-    const option = document.createElement("option");
-
-    option.value = county.name;
-    option.textContent = county.name;
-
-    countySelect.appendChild(option);
-});
-
 
 const previewSVG = document.getElementById("county-preview-svg");
 const countyName = document.getElementById("county-name");
@@ -132,7 +112,27 @@ function selectCounty(path) {
         clearCountyPreview();
     }
     drawSelectionOutline(path);
+    // Lets the county search box (inputs.js) follow map clicks.
+    document.dispatchEvent(new CustomEvent("countyselected", {
+        detail: { fips: path ? path.dataset.fips || null : null },
+    }));
 }
+
+// Lets other code (e.g. the county search box) select a county by FIPS code.
+// Pass null to clear the selection. Returns false if the FIPS code is unknown.
+function selectCountyByFips(fips) {
+    if (fips === null) {
+        if (selectedPath) selectCounty(null);
+        return true;
+    }
+    const county = countyIndex && countyIndex.byFips[fips];
+    const path = county && document.getElementById(county.svgId);
+    if (!path) return false;
+    if (path !== selectedPath) selectCounty(path);
+    return true;
+}
+
+window.MapView = Object.freeze({ selectCountyByFips });
 
 // When the pointer/focus leaves a county, fall back to the selected one.
 function restoreSelectedPreview() {

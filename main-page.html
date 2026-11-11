@@ -402,9 +402,19 @@
                         <dd id="county-income">-</dd>
                     </dl>
                 </div>
-                <select id="county-select">
-                    <option value=""> Select a County</option>
-                </select>
+                <div id="county-search-group">
+                    <label for="county-search">County</label><br>
+                    <input
+                        type="search"
+                        id="county-search"
+                        name="county-search"
+                        list="county-options"
+                        placeholder="Search counties"
+                        autocomplete="off"
+                        aria-describedby="county-error">
+                    <datalist id="county-options"></datalist>
+                    <p id="county-error" class="error-message" role="alert"></p>
+                </div>
                 
             </div>
         </div>

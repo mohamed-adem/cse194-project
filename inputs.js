@@ -63,11 +63,61 @@
         }
         if (startInput.value.trim() === "") startInput.value = max;
         onModeChange();
+        initCountySearch();
     }
 
     startInput.addEventListener("change", applyYears);
     endInput.addEventListener("change", applyYears);
     modeRadios.forEach(radio => radio.addEventListener("change", onModeChange));
+
+
+    // ---- County search ----
+    const countyInput = document.getElementById("county-search");
+    const countyOptions = document.getElementById("county-options");
+    const countyError = document.getElementById("county-error");
+    let fipsByName = null; // display name -> FIPS, set once data has loaded
+
+    function showCountyError(message) {
+        countyError.textContent = message;
+        countyInput.setAttribute("aria-invalid", message ? "true" : "false");
+    }
+
+    function applyCountySearch() {
+        if (!fipsByName) return;
+        const result = Validation.matchCountyName(countyInput.value, Object.keys(fipsByName));
+        if (!result.ok) {
+            showCountyError(result.error);
+            return;
+        }
+        showCountyError("");
+        if (result.name) countyInput.value = result.name; // complete "san d" -> "San Diego"
+        window.MapView.selectCountyByFips(result.name ? fipsByName[result.name] : null);
+    }
+
+    function initCountySearch() {
+        fipsByName = {};
+        for (const county of Object.values(window.CountyData.byFips)) {
+            fipsByName[county.name] = county.fips;
+        }
+        const names = Object.keys(fipsByName).sort((a, b) => a.localeCompare(b));
+        countyOptions.replaceChildren(...names.map(name => {
+            const option = document.createElement("option");
+            option.value = name;
+            return option;
+        }));
+    }
+
+    // "change" fires on Enter, on blur, and when a suggestion is picked;
+    // "search" fires when the clear (x) button is used.
+    countyInput.addEventListener("change", applyCountySearch);
+    countyInput.addEventListener("search", applyCountySearch);
+
+    // Keep the box in sync when the county is (un)selected on the map.
+    document.addEventListener("countyselected", event => {
+        const county = event.detail.fips && window.CountyData && window.CountyData.byFips[event.detail.fips];
+        countyInput.value = county ? county.name : "";
+        showCountyError("");
+    });
 
     if (window.CountyData) {
         init();
