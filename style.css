@@ -71,6 +71,16 @@ path:focus-visible {
     fill: rgb(244, 244, 244);
 }
 
+.error-message {
+    color: #b00020;
+    min-height: 1.2em;
+    max-width: 250px;
+}
+
+input[aria-invalid="true"] {
+    border-color: #b00020;
+}
+
 .county-preview {
     width: 250px;
     text-align: center;

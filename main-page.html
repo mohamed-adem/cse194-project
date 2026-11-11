@@ -359,23 +359,37 @@
             </svg>
             
             <div>
-                <div>
-                start: <br> <input 
-                    type="number" 
-                    id="birth-year" 
-                    name="birth-year" 
-                    min="1900" 
-                    max="2026" 
-                    placeholder="YYYY" 
-                    required> <br>
-                end: <br> <input 
-                    type="number" 
-                    id="birth-year" 
-                    name="birth-year" 
-                    min="1900" 
-                    max="2026" 
-                    placeholder="YYYY">
-                </div>
+                <fieldset id="year-controls" autocomplete="off">
+                    <legend>Years</legend>
+                    <div class="year-mode">
+                        <label><input type="radio" name="year-mode" value="single" autocomplete="off" checked> Single year</label>
+                        <label><input type="radio" name="year-mode" value="range" autocomplete="off"> Range</label>
+                    </div>
+                    <div>
+                        <label for="start-year" id="start-year-label">Year</label><br>
+                        <input
+                            type="number"
+                            autocomplete="off"
+                            id="start-year"
+                            name="start-year"
+                            placeholder="YYYY"
+                            step="1"
+                            aria-describedby="year-error"
+                            required>
+                    </div>
+                    <div id="end-year-group" hidden>
+                        <label for="end-year">End year</label><br>
+                        <input
+                            type="number"
+                            autocomplete="off"
+                            id="end-year"
+                            name="end-year"
+                            placeholder="YYYY"
+                            step="1"
+                            aria-describedby="year-error">
+                    </div>
+                    <p id="year-error" class="error-message" role="alert"></p>
+                </fieldset>
                 <div class="county-preview">
                     <h2 id="county-name">Hover over a county</h2>
                     <svg id="county-preview-svg"></svg>
@@ -396,5 +410,7 @@
         </div>
     </body>
     <script src="js/county-data.js"></script>
+    <script src="js/validation.js"></script>
     <script src="main-page.js"></script>
+    <script src="inputs.js"></script>
 </html>

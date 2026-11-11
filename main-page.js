@@ -28,7 +28,8 @@ const countyIncome = document.getElementById("county-income");
 
 // Loaded county data (see js/county-data.js). Null until the fetch completes.
 let countyIndex = null;
-let currentYear = null;
+// Years shown in the panel; updated by inputs.js through the "appstatechange" event.
+let yearRange = { startYear: null, endYear: null };
 
 function showCountyValues(path) {
     if (!countyIndex) {
@@ -36,11 +37,32 @@ function showCountyValues(path) {
         countyIncome.textContent = "Loading...";
         return;
     }
-    const record = CountyDataUtils.getRecord(countyIndex, path.dataset.fips, currentYear);
-    countyYear.textContent = currentYear;
-    countyHomeValue.textContent = CountyDataUtils.formatUsd(record && record.homeValueUsd);
-    countyIncome.textContent = CountyDataUtils.formatUsd(record && record.perCapitaPersonalIncomeUsd);
+    const { startYear, endYear } = yearRange;
+    const fips = path.dataset.fips;
+    const end = CountyDataUtils.getRecord(countyIndex, fips, endYear);
+    const fmt = (record, key) => CountyDataUtils.formatUsd(record && record[key]);
+
+    if (startYear === endYear) {
+        countyYear.textContent = endYear;
+        countyHomeValue.textContent = fmt(end, "homeValueUsd");
+        countyIncome.textContent = fmt(end, "perCapitaPersonalIncomeUsd");
+        return;
+    }
+    // Range: show the raw values at both ends; computing the change is the
+    // calculation logic's job (Gantt 3.3.1).
+    const start = CountyDataUtils.getRecord(countyIndex, fips, startYear);
+    countyYear.textContent = `${startYear} to ${endYear}`;
+    countyHomeValue.textContent = `${fmt(start, "homeValueUsd")} to ${fmt(end, "homeValueUsd")}`;
+    countyIncome.textContent =
+        `${fmt(start, "perCapitaPersonalIncomeUsd")} to ${fmt(end, "perCapitaPersonalIncomeUsd")}`;
 }
+
+document.addEventListener("appstatechange", event => {
+    const { startYear, endYear } = event.detail;
+    if (startYear === undefined || endYear === undefined) return;
+    yearRange = { startYear, endYear };
+    restoreSelectedPreview();
+});
 
 function showCountyPreview(path) {
     const county = countyIndex && countyIndex.bySvgId[path.id];
@@ -157,7 +179,8 @@ async function loadCountyData() {
         throw new Error(`Failed to load county data: HTTP ${response.status}`);
     }
     countyIndex = CountyDataUtils.buildIndex(await response.json());
-    currentYear = countyIndex.years[countyIndex.years.length - 1];
+    const latestYear = countyIndex.years[countyIndex.years.length - 1];
+    yearRange = { startYear: latestYear, endYear: latestYear };
 
     countyPaths.forEach(path => {
         const county = countyIndex.bySvgId[path.id];
