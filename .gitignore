@@ -1,8 +1,3 @@
 # Node / Jest
 node_modules/
 coverage/
-
-# Claude Code workflow files
-.claude/
-CLAUDE.md
-CLAUDE.local.md

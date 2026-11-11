@@ -32,8 +32,8 @@ let currentYear = null;
 
 function showCountyValues(path) {
     if (!countyIndex) {
-        countyHomeValue.textContent = "Loading…";
-        countyIncome.textContent = "Loading…";
+        countyHomeValue.textContent = "Loading...";
+        countyIncome.textContent = "Loading...";
         return;
     }
     const record = CountyDataUtils.getRecord(countyIndex, path.dataset.fips, currentYear);
@@ -65,9 +65,90 @@ function showCountyPreview(path) {
     showCountyValues(path);
 }
 
+function clearCountyPreview() {
+    countyName.textContent = "Hover over a county";
+    previewSVG.innerHTML = "";
+    countyYear.textContent = "-";
+    countyHomeValue.textContent = "-";
+    countyIncome.textContent = "-";
+}
+
+
+// ---- Selection ----
+const mapSVG = document.querySelector("#svg-holder svg");
+let selectedPath = null;
+let selectionOutline = null;
+
+// Draws the selected county's outline on top of its neighbours without
+// reordering the DOM (which would change keyboard tab order).
+function drawSelectionOutline(path) {
+    if (selectionOutline) selectionOutline.remove();
+    selectionOutline = null;
+    if (!path) return;
+    selectionOutline = path.cloneNode(false);
+    selectionOutline.removeAttribute("id");
+    selectionOutline.removeAttribute("tabindex");
+    selectionOutline.removeAttribute("aria-label");
+    selectionOutline.removeAttribute("role");
+    selectionOutline.removeAttribute("style");
+    selectionOutline.setAttribute("class", "selection-outline");
+    selectionOutline.setAttribute("aria-hidden", "true");
+    mapSVG.appendChild(selectionOutline);
+}
+
+function selectCounty(path) {
+    if (selectedPath) {
+        selectedPath.classList.remove("selected");
+        selectedPath.setAttribute("aria-pressed", "false");
+    }
+    selectedPath = path;
+    if (path) {
+        path.classList.add("selected");
+        path.setAttribute("aria-pressed", "true");
+        showCountyPreview(path);
+    } else {
+        clearCountyPreview();
+    }
+    drawSelectionOutline(path);
+}
+
+// When the pointer/focus leaves a county, fall back to the selected one.
+function restoreSelectedPreview() {
+    if (selectedPath) {
+        showCountyPreview(selectedPath);
+    } else {
+        clearCountyPreview();
+    }
+}
+
 countyPaths.forEach(path => {
+    path.setAttribute("tabindex", "0");
+    path.setAttribute("role", "button");
+    path.setAttribute("aria-pressed", "false");
+    path.setAttribute("aria-label", `${path.id} County`);
+
     path.addEventListener("mouseenter", () => showCountyPreview(path));
+    path.addEventListener("focus", () => showCountyPreview(path));
+    path.addEventListener("blur", restoreSelectedPreview);
+    // Clicking the already-selected county unselects it.
+    const toggleSelection = () => {
+        if (selectedPath === path) {
+            selectCounty(null);
+            showCountyPreview(path); // pointer/focus is still on it
+        } else {
+            selectCounty(path);
+        }
+    };
+    path.addEventListener("click", toggleSelection);
+    path.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            toggleSelection();
+        }
+    });
 });
+
+mapSVG.addEventListener("mouseleave", restoreSelectedPreview);
 
 
 async function loadCountyData() {
@@ -82,10 +163,13 @@ async function loadCountyData() {
         const county = countyIndex.bySvgId[path.id];
         if (county) {
             path.dataset.fips = county.fips;
+            path.setAttribute("aria-label", `${county.name} County`);
         } else {
             console.warn(`Map county "${path.id}" has no matching entry in county-data.json`);
         }
     });
+    // Refresh the panel in case a county was selected before the data arrived.
+    restoreSelectedPreview();
 
     // Read-only access for calculation and map-colouring code.
     window.CountyData = Object.freeze({
