@@ -1,0 +1,18 @@
+{
+  "name": "cse194-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mapping house price changes alongside average income changes in California counties",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/tests/**/*.test.js"
+    ]
+  },
+  "devDependencies": {
+    "jest": "^30.5.2"
+  }
+}
