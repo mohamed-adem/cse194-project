@@ -2,6 +2,10 @@
     --low: #2ae727;
     --med: #ffeb10;
     --high: #fd0606;
+
+    --accent-color: #005b96;
+    --background-color: #f8f9fa;
+    --text-color: #212529;
 }
 
 .low {
@@ -17,11 +21,30 @@
 }
 
 *{
+    color: var(--text-color);
+}
 
+.header-button{
+    font-size: 1.9rem;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+}
+
+a{
+    display: inline-block;
+}
+
+a:hover{
+    transform: scale(1.05);
 }
 
 header{
-    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--accent-color);
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 #svg-holder{
