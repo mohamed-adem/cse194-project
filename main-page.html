@@ -1,5 +1,6 @@
 <html>
     <head>
+        <meta charset="UTF-8">
         <link rel="stylesheet" href="style.css">
         <title>Main Page</title>
     </head>
@@ -366,50 +367,69 @@
                 inkscape:connector-curvature="0" />
             </svg>
             
-            <!-- <div>
-                <div>
-                start: <br> <input 
-                    type="number" 
-                    id="birth-year" 
-                    name="birth-year" 
-                    min="1900" 
-                    max="2026" 
-                    placeholder="YYYY" 
-                    required> <br>
-                end: <br> <input 
-                    type="number" 
-                    id="birth-year" 
-                    name="birth-year" 
-                    min="1900" 
-                    max="2026" 
-                    placeholder="YYYY">
-                </div>
-                <div class="county-preview">
-                    <h2 id="county-name">Hover over a county</h2>
-                    <svg id="county-preview-svg"></svg>
-                </div>
-                <select id="county-select">
-                    <option value=""> Select a County</option>
-                </select>
-                
-            </div> -->
             <div id="controls">
-                <div class="input-group">
-                    <label for="start-year">Start Year:</label><br>
-                    <input type="number" id="start-year" min="1900" max="2026" placeholder="YYYY" required> <br><br>
-                    
-                    <label for="end-year">End Year:</label><br>
-                    <input type="number" id="end-year" min="1900" max="2026" placeholder="YYYY">
-                </div>
+                <fieldset id="year-controls" class="input-group" autocomplete="off">
+                    <legend>Years</legend>
+                    <div class="year-mode">
+                        <label><input type="radio" name="year-mode" value="single" autocomplete="off" checked> Single year</label>
+                        <label><input type="radio" name="year-mode" value="range" autocomplete="off"> Range</label>
+                    </div>
+                    <div>
+                        <label for="start-year" id="start-year-label">Year</label><br>
+                        <input
+                            type="number"
+                            autocomplete="off"
+                            id="start-year"
+                            name="start-year"
+                            placeholder="YYYY"
+                            step="1"
+                            aria-describedby="year-error"
+                            required>
+                    </div>
+                    <div id="end-year-group" hidden>
+                        <label for="end-year">End year</label><br>
+                        <input
+                            type="number"
+                            autocomplete="off"
+                            id="end-year"
+                            name="end-year"
+                            placeholder="YYYY"
+                            step="1"
+                            aria-describedby="year-error">
+                    </div>
+                    <p id="year-error" class="error-message" role="alert"></p>
+                </fieldset>
                 <div class="county-preview">
                     <h2 id="county-name">Hover over a county</h2>
                     <svg id="county-preview-svg"></svg>
+                    <dl class="county-stats">
+                        <dt>Year</dt>
+                        <dd id="county-year">-</dd>
+                        <dt>Typical home value</dt>
+                        <dd id="county-home-value">-</dd>
+                        <dt>Per capita income</dt>
+                        <dd id="county-income">-</dd>
+                    </dl>
                 </div>
-                <select id="county-select">
-                    <option value="">Select a County</option>
-                </select>
+                <div id="county-search-group">
+                    <label for="county-search">County</label><br>
+                    <input
+                        type="search"
+                        id="county-search"
+                        name="county-search"
+                        list="county-options"
+                        placeholder="Search counties"
+                        autocomplete="off"
+                        aria-describedby="county-error">
+                    <datalist id="county-options"></datalist>
+                    <p id="county-error" class="error-message" role="alert"></p>
+                </div>
             </div>
         </div>
     </body>
+    <script src="js/county-data.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/app-state.js"></script>
     <script src="main-page.js"></script>
+    <script src="inputs.js"></script>
 </html>
