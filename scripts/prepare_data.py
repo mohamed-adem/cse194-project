@@ -22,6 +22,12 @@ def number(value):
     return result
 
 
+def county_name(value):
+    name = ' '.join(value.split()).rstrip(' *')
+    name = re.sub(r',\s*(?:CA|California)$', '', name, flags=re.I)
+    return re.sub(r'\s+County$', '', name, flags=re.I).strip()
+
+
 def build(raw_dir, output_dir):
     bea_path = raw_dir / 'bea_cainc1.csv'
     zillow_path = raw_dir / 'zillow_county_zhvi.csv'
@@ -37,7 +43,7 @@ def build(raw_dir, output_dir):
             raise ValueError(f'Duplicate BEA county: {fips}')
         if not row['Description'].startswith('Per capita personal income (dollars)'):
             raise ValueError('BEA income definition changed')
-        names[fips] = row['GeoName'].removesuffix(', CA')
+        names[fips] = county_name(row['GeoName'])
         income[fips] = {int(year): number(value) for year, value in row.items() if year.isdigit()}
     housing = {}
     with zillow_path.open(encoding='utf-8-sig', newline='') as source:
@@ -49,8 +55,10 @@ def build(raw_dir, output_dir):
             fips = row['StateCodeFIPS'].zfill(2) + row['MunicipalCodeFIPS'].zfill(3)
             if fips in housing:
                 raise ValueError(f'Duplicate Zillow county: {fips}')
-            if names.get(fips) != row['RegionName'].removesuffix(' County'):
-                raise ValueError(f'County name/FIPS mismatch: {fips}')
+            bea_name = names.get(fips)
+            zillow_name = row['RegionName']
+            if bea_name is None or bea_name.casefold() != county_name(zillow_name).casefold():
+                raise ValueError(f'County name/FIPS mismatch: {fips} (BEA {bea_name!r}, Zillow {zillow_name!r})')
             housing[fips] = {date: number(row[date]) for date in dates}
     expected = {f'06{code:03}' for code in range(1, 116, 2)}
     if set(income) != expected or set(housing) != expected:

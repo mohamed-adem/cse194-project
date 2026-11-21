@@ -90,17 +90,15 @@ jobs:
                   continue
                 fi
                 release_url="$base_url/$year/$year-state-and-county"
-                release_index=$(curl --fail --silent --show-error --location --retry 3 "$release_url/")
-                stem="est${year:2}-ca"
-                filename=$(printf '%s\n' "$release_index" |
-                  sed -nE "s/.*href=\"($stem\\.(txt|dat))\".*/\\1/p" | sort -u)
-                if [[ "$filename" != "$stem.txt" && "$filename" != "$stem.dat" ]]; then
-                  echo "::error::Could not identify the California SAIPE file for $year"
-                  exit 1
+                # Census used .dat through 2003 and .txt starting in 2004.
+                extension=txt
+                if (( year <= 2003 )); then
+                  extension=dat
                 fi
+                filename="est${year:2}-ca.$extension"
                 url="$release_url/$filename"
                 urls+=("$url")
-                output_names["$url"]="County_Median_Household_Income_${year}.${filename##*.}"
+                output_names["$url"]="County_Median_Household_Income_${year}.$extension"
               done
               if (( ${#urls[@]} < 31 )); then
                 echo "::error::The Census archive returned fewer than 31 county releases"
