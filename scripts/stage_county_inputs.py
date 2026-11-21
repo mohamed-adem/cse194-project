@@ -53,7 +53,12 @@ def stage(download_dir, raw_dir):
         for row in bea_rows:
             if row and row[0].startswith("Legend/Footnotes"):
                 break
-            if row and re.fullmatch(r"06\d{3}", code := row[0].strip().zfill(5)) and code != "06000":
+            if not row:
+                continue
+            # BEA pads the field before the quotes, so csv.reader leaves them in the value.
+            code = row[0].strip().strip('"').zfill(5)
+            if re.fullmatch(r"06\d{3}", code) and code != "06000":
+                row[0] = code
                 writer.writerow(row)
     shutil.copyfile(zillow, raw_dir / "zillow_county_zhvi.csv")
 
