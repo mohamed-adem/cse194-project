@@ -1,0 +1,123 @@
+name: Annual data downloads
+
+on:
+  schedule:
+    - cron: &site_01_cron '17 16 15 1 *' # site-01
+    - cron: &site_02_cron '17 16 15 2 *' # site-02, BEA
+    - cron: &site_03_cron '17 16 15 3 *' # site-03, Census SAIPE
+    - cron: &site_04_cron '17 16 15 4 *' # site-04
+    - cron: &site_05_cron '17 16 15 5 *' # site-05, FHFA county house price index
+    - cron: &site_06_cron '17 16 15 6 *' # site-06, Zillow county ZHVI
+
+permissions: {}
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Download source files
+        id: download
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+          SITE_01_CRON: *site_01_cron
+          SITE_02_CRON: *site_02_cron
+          SITE_03_CRON: *site_03_cron
+          SITE_04_CRON: *site_04_cron
+          SITE_05_CRON: *site_05_cron
+          SITE_06_CRON: *site_06_cron
+          SITE_07_CRON: *site_07_cron
+          SITE_08_CRON: *site_08_cron
+          SITE_09_CRON: *site_09_cron
+          SITE_10_CRON: *site_10_cron
+        shell: bash
+        run: |
+          # Add one direct download URL per file to the site's urls array.
+          declare -A output_names=()
+          case "$SCHEDULE" in
+            "$SITE_01_CRON")
+              site=site-01
+              urls=(
+                "https://publish.data.ca.gov/dataset/3f08b68e-1d1a-4ba4-a07d-1ec3392ed191/resource/577beabf-3f53-4848-807f-adfd0551831c/download/qcew_2004-2007.csv"
+                "https://publish.data.ca.gov/dataset/3f08b68e-1d1a-4ba4-a07d-1ec3392ed191/resource/0f196f1d-4447-479b-bef5-fb16a9093be9/download/qcew_2008-2011.csv"
+                "https://publish.data.ca.gov/dataset/3f08b68e-1d1a-4ba4-a07d-1ec3392ed191/resource/51b27b21-bbd2-48ba-9f6d-997a282c5fce/download/qcew_2012-2015.csv"
+                "https://publish.data.ca.gov/dataset/3f08b68e-1d1a-4ba4-a07d-1ec3392ed191/resource/78a9d6ee-ec9a-4c25-ae34-5bac44010cb2/download/qcew_2016-2019.csv"
+                "https://publish.data.ca.gov/dataset/3f08b68e-1d1a-4ba4-a07d-1ec3392ed191/resource/ca165fad-4f16-48c7-808e-8b5222bc4182/download/qcew-2020-2022.csv"
+                "https://publish.data.ca.gov/dataset/3f08b68e-1d1a-4ba4-a07d-1ec3392ed191/resource/119eef38-3b59-499f-8f7c-9bea4768469d/download/qcew-2023-2025q4.csv"
+              )
+              ;;
+            "$SITE_02_CRON")
+              site=site-02
+              # BEA publishes CAINC1 as a public ZIP of CSV files.
+              urls=("https://apps.bea.gov/regional/zip/CAINC1.zip")
+              ;;
+            "$SITE_03_CRON")
+              site=site-03
+              base_url="https://www2.census.gov/programs-surveys/saipe/datasets"
+              archive_index=$(curl --fail --silent --show-error --location --retry 3 "$base_url/")
+              years=$(printf '%s\n' "$archive_index" |
+                sed -nE 's/.*href="([0-9]{4})\/".*/\1/p' | sort -u)
+              urls=()
+              for year in $years; do
+                # Census published only state-level estimates for 1996.
+                if [[ "$year" == 1996 ]]; then
+                  continue
+                fi
+                release_url="$base_url/$year/$year-state-and-county"
+                release_index=$(curl --fail --silent --show-error --location --retry 3 "$release_url/")
+                stem="est${year:2}-ca"
+                filename=$(printf '%s\n' "$release_index" |
+                  sed -nE "s/.*href=\"($stem\\.(txt|dat))\".*/\\1/p" | sort -u)
+                if [[ "$filename" != "$stem.txt" && "$filename" != "$stem.dat" ]]; then
+                  echo "::error::Could not identify the California SAIPE file for $year"
+                  exit 1
+                fi
+                urls+=("$release_url/$filename")
+              done
+              if (( ${#urls[@]} < 31 )); then
+                echo "::error::The Census archive returned fewer than 31 county releases"
+                exit 1
+              fi
+              ;;
+            "$SITE_04_CRON") site=site-04; urls=(https://econdata.s3-us-west-2.amazonaws.com/Reports/Core/RDC_Inventory_Core_Metrics_County_History.csv) ;;
+            "$SITE_05_CRON")
+              site=site-05
+              # The FHFA workbook contains the historical annual county series listed by FRED.
+              urls=("https://www.fhfa.gov/hpi/download/annual/hpi_at_county.xlsx")
+              ;;
+            "$SITE_06_CRON")
+              site=site-06
+              # County ZHVI for mid-tier single-family homes and condos/co-ops.
+              urls=("https://files.zillowstatic.com/research/public_csvs/zhvi/County_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv")
+              output_names["${urls[0]}"]="Zillow_County_house.csv"
+              ;;
+            *) echo "::error::No download source matches this schedule"; exit 1 ;;
+          esac
+
+          if (( ${#urls[@]} == 0 )); then
+            echo "::notice::Add direct download URLs for $site to enable downloads"
+            exit 0
+          fi
+
+          directory="raw_data/$site"
+          mkdir -p "$directory"
+          for url in "${urls[@]}"; do
+            url_path="${url%%[?#]*}"
+            filename="${output_names[$url]:-${url_path##*/}}"
+            if [[ -z "$filename" || "$filename" == "." || "$filename" == ".." || -e "$directory/$filename" ]]; then
+              echo "::error::URL for $site has a missing, invalid, or duplicate filename"
+              exit 1
+            fi
+            curl --fail --silent --show-error --location --retry 3 \
+              --output "$directory/$filename" -- "$url"
+          done
+
+          echo "site=$site" >> "$GITHUB_OUTPUT"
+
+      - name: Save downloads as an artifact
+        if: steps.download.outputs.site != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.download.outputs.site }}-raw-data
+          path: raw_data/
+          if-no-files-found: error
