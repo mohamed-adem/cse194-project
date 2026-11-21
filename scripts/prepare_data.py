@@ -28,7 +28,7 @@ def county_name(value):
     return re.sub(r'\s+County$', '', name, flags=re.I).strip()
 
 
-def build(raw_dir, output_dir):
+def build(raw_dir, output_dir, through_year=None):
     bea_path = raw_dir / 'bea_cainc1.csv'
     zillow_path = raw_dir / 'zillow_county_zhvi.csv'
     lines = bea_path.read_text(encoding='utf-8-sig').splitlines()
@@ -71,6 +71,8 @@ def build(raw_dir, output_dir):
     years = sorted(set.intersection(*(set(values) for values in income.values())) & {int(d[:4]) for d in dates})
     # Exclude source calendar years that do not have all twelve monthly columns.
     years = [year for year in years if sum(d.startswith(str(year)) for d in dates) == 12]
+    if through_year is not None:
+        years = [year for year in years if year <= through_year]
     counties, mapping, coverage = {}, {}, defaultdict(int)
     for fips in sorted(expected):
         name = names[fips]
@@ -112,5 +114,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--raw-dir', type=Path, default=ROOT / 'data/raw')
     parser.add_argument('--output-dir', type=Path, default=ROOT / 'data')
+    parser.add_argument('--through-year', type=int, help='Latest year to include in the output')
     args = parser.parse_args()
-    build(args.raw_dir, args.output_dir)
+    build(args.raw_dir, args.output_dir, args.through_year)

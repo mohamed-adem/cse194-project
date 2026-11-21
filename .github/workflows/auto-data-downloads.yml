@@ -3,12 +3,13 @@ name: Annual data downloads
 on:
   workflow_dispatch:
   schedule:
-    - cron: &dataset_01_qcew_cron '00 00 29 10 *' # dataset_01_quarterly_census_of_employment_and_wages Quarterly Census of Employment and Wages - October 30th
-    - cron: &dataset_02_bea_county_personal_income_cron '00 00 6 2 *' # dataset_02_bea_county_personal_income, BEA - Personal income - Feburary 6th
-    - cron: &dataset_03_county_median_household_income_cron '00 00 6 2 *' # dataset_03_county_median_household_income, Census SAIPE
-    - cron: &dataset_04_county_median_listing_price_cron '00 00 5 * *' # dataset_04_county_median_listing_price Realtor
-    - cron: &dataset_05_county_house_price_index_cron '00 00 16 8 *' # dataset_05_county_house_price_index, FHFA county house price index
-    - cron: &dataset_06_zillow_county_home_value_index_cron '00 00 17 * *' # dataset_06_zillow_county_home_value_index, Zillow county ZHVI
+    # Every trigger refreshes every dataset. The notes identify the source of each schedule.
+    - cron: '00 00 29 10 *' # dataset_01_quarterly_census_of_employment_and_wages Quarterly Census of Employment and Wages - October 30th
+    # dataset_03_county_median_household_income, Census SAIPE, shares the BEA schedule below.
+    - cron: '00 00 6 2 *' # dataset_02_bea_county_personal_income, BEA - Personal income - Feburary 6th
+    - cron: '00 00 5 * *' # dataset_04_county_median_listing_price Realtor
+    - cron: '00 00 16 8 *' # dataset_05_county_house_price_index, FHFA county house price index
+    - cron: '00 00 17 * *' # dataset_06_zillow_county_home_value_index, Zillow county ZHVI
 
 permissions: {}
 
@@ -17,36 +18,19 @@ jobs:
     name: Download ${{ matrix.dataset }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      BEA_SCHEDULE: *dataset_02_bea_county_personal_income_cron
-      ZILLOW_SCHEDULE: *dataset_06_zillow_county_home_value_index_cron
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - dataset: dataset_01_qcew
-            schedule: *dataset_01_qcew_cron
-          - dataset: dataset_02_bea_county_personal_income
-            schedule: *dataset_02_bea_county_personal_income_cron
-            build_input: true
-          - dataset: dataset_03_county_median_household_income
-            schedule: *dataset_03_county_median_household_income_cron
-          - dataset: dataset_04_county_median_listing_price
-            schedule: *dataset_04_county_median_listing_price_cron
-          - dataset: dataset_05_county_house_price_index
-            schedule: *dataset_05_county_house_price_index_cron
-          - dataset: dataset_06_zillow_county_home_value_index
-            schedule: *dataset_06_zillow_county_home_value_index_cron
-            build_input: true
+        dataset:
+          - dataset_01_qcew
+          - dataset_02_bea_county_personal_income
+          - dataset_03_county_median_household_income
+          - dataset_04_county_median_listing_price
+          - dataset_05_county_house_price_index
+          - dataset_06_zillow_county_home_value_index
     steps:
       - name: Download source files
         id: download
-        # Refresh both inputs together so the build can use artifacts from this run.
-        if: >-
-          github.event_name == 'workflow_dispatch' ||
-          matrix.schedule == github.event.schedule ||
-          (matrix.build_input && (github.event.schedule == env.BEA_SCHEDULE ||
-          github.event.schedule == env.ZILLOW_SCHEDULE))
         env:
           DATASET: ${{ matrix.dataset }}
         shell: bash
@@ -72,6 +56,21 @@ jobs:
                   exit 1
                 fi
               done
+              # Discover newer releases so coverage can advance beyond 2025.
+              catalog="https://publish.data.ca.gov/api/3/action/package_show?id=3f08b68e-1d1a-4ba4-a07d-1ec3392ed191"
+              metadata=$(curl --fail --silent --show-error --location --retry 3 "$catalog")
+              recent=$(jq -r '
+                if .success then .result.resources[] else error("QCEW catalog request failed") end |
+                select((.format | ascii_upcase) == "CSV") |
+                select(.name | test("^QCEW (20[3-9][0-9]|202[6-9])")) |
+                [.id, .url] | @tsv
+              ' <<< "$metadata")
+              while IFS=$'\t' read -r resource url; do
+                if [[ -n "$url" ]]; then
+                  urls+=("$url")
+                  output_names["$url"]="Avg_Wage_County_$resource.csv"
+                fi
+              done <<< "$recent"
               ;;
             dataset_02_bea_county_personal_income)
               # BEA publishes CAINC1 as a public ZIP of CSV files.
@@ -152,7 +151,6 @@ jobs:
 
   prepare-county-data:
     needs: download
-    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -161,31 +159,22 @@ jobs:
     concurrency:
       group: county-data-${{ github.ref }}
       cancel-in-progress: false
-    env:
-      BEA_SCHEDULE: *dataset_02_bea_county_personal_income_cron
-      ZILLOW_SCHEDULE: *dataset_06_zillow_county_home_value_index_cron
     steps:
       - uses: actions/checkout@v4
-        if: >-
-          github.event_name == 'workflow_dispatch' ||
-          github.event.schedule == env.BEA_SCHEDULE || github.event.schedule == env.ZILLOW_SCHEDULE
         with:
           persist-credentials: false
 
       - uses: actions/download-artifact@v4
-        if: >-
-          github.event_name == 'workflow_dispatch' ||
-          github.event.schedule == env.BEA_SCHEDULE || github.event.schedule == env.ZILLOW_SCHEDULE
         with:
-          pattern: dataset_0[26]_*-raw-data
+          pattern: dataset_0[1-6]_*-raw-data
           merge-multiple: true
           path: direct_downloads
 
+      - name: Install the FHFA workbook reader
+        run: pip install openpyxl==3.1.5
+
       - name: Build and check county data
         id: build
-        if: >-
-          github.event_name == 'workflow_dispatch' ||
-          github.event.schedule == env.BEA_SCHEDULE || github.event.schedule == env.ZILLOW_SCHEDULE
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -193,29 +182,20 @@ jobs:
           python scripts/stage_county_inputs.py --download-dir direct_downloads --raw-dir "$RUNNER_TEMP/county-inputs"
           python scripts/prepare_data.py --raw-dir "$RUNNER_TEMP/county-inputs" --output-dir "$RUNNER_TEMP/county-candidate"
 
-          year=$(python - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-
-          baseline = json.loads(Path("data/coverage.json").read_text())
-          candidate_path = Path(os.environ["RUNNER_TEMP"]) / "county-candidate/coverage.json"
-          candidate = json.loads(candidate_path.read_text())
-          previous = max(baseline["allCountyYears"], default=0)
-          latest = max(candidate["allCountyYears"], default=0)
-          if latest > previous:
-              print(latest)
-          PY
-          )
+          year=$(python scripts/check_dataset_year.py direct_downloads \
+            data/coverage.json "$RUNNER_TEMP/county-candidate/coverage.json")
           if [[ -z "$year" ]]; then
-            echo "::notice::The latest year with complete data for all 58 counties did not advance"
+            echo "::notice::No newer year is complete across all six datasets"
             exit 0
           fi
+
+          python scripts/prepare_data.py --raw-dir "$RUNNER_TEMP/county-inputs" \
+            --output-dir "$RUNNER_TEMP/county-candidate" --through-year "$year"
 
           artifact="county-data-through-$year"
           existing=$(gh api --method GET "repos/$GITHUB_REPOSITORY/actions/artifacts" \
             -f name="$artifact" --paginate \
-            --jq '.artifacts[] | select(.expired == false and .workflow_run.head_branch == env.GITHUB_REF_NAME) | .id')
+            | jq --arg branch "$GITHUB_REF_NAME" '.artifacts[] | select(.expired == false and .workflow_run.head_branch == $branch) | .id')
           if [[ -n "$existing" ]]; then
             echo "::notice::County data through $year has already been uploaded"
             exit 0
