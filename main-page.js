@@ -8,13 +8,42 @@ const countyIncome = document.getElementById("county-income");
 
 // Loaded county data (see js/county-data.js). Null until the fetch completes.
 let countyIndex = null;
+let loadFailed = false;
+const metricSelect = document.getElementById('map-metric');
+const changeFields = ['county-home-change','county-income-change','county-growth-gap'].map(id => document.getElementById(id));
+function renderCountyMap() {
+    if (!countyIndex) return;
+    const {startYear,endYear} = yearRange;
+    const range = yearRange.mode === "range";
+    metricSelect.querySelector('[value="gap"]').disabled = !range;
+    if (!range && metricSelect.value === 'gap') metricSelect.value = 'homeValueUsd';
+    const metric = metricSelect.value;
+    const values = [...countyPaths].map(path => MapMetrics.value(
+        CountyDataUtils.getRecord(countyIndex,path.dataset.fips,startYear),
+        CountyDataUtils.getRecord(countyIndex,path.dataset.fips,endYear),metric,range));
+    const bounds = MapMetrics.scale(values,range);
+    const label = MapMetrics.metrics[metric] + (range && metric !== 'gap' ? ' change' : '');
+    const period = range ? `${startYear}–${endYear}` : String(endYear);
+    countyPaths.forEach((path,i) => {
+        path.style.fill = MapMetrics.color(values[i],bounds,range);
+        path.setAttribute('aria-label',`${countyIndex.bySvgId[path.id]?.name || path.id} County: ${label}, ${period}, ${MapMetrics.format(values[i],metric,range)}`);
+    });
+    const count = values.filter(v => typeof v === 'number' && Number.isFinite(v)).length;
+    document.getElementById('map-summary').textContent = `${label}, ${period}. Data available for ${count} of ${countyPaths.length} counties.`;
+    const bar = document.getElementById('map-color-bar');
+    bar.hidden = !count;
+    bar.style.background = range ? 'linear-gradient(to right,hsl(215,70%,45%),#f7f7f7,hsl(25,70%,45%))' : 'linear-gradient(to right,hsl(210,65%,92%),hsl(210,65%,30%))';
+    document.getElementById('map-legend').textContent = count ? `${MapMetrics.format(bounds.min,metric,range)} to ${MapMetrics.format(bounds.max,metric,range)}. ${range ? 'Blue: negative; white: zero; orange: positive.' : 'Light to dark: lower to higher.'} Gray: no data.` : 'No data for this measure and year range.';
+    restoreSelectedPreview();
+}
+metricSelect.addEventListener('change',renderCountyMap);
 // Years shown in the panel; updated by inputs.js through the "appstatechange" event.
 let yearRange = { startYear: null, endYear: null };
 
 function showCountyValues(path) {
     if (!countyIndex) {
-        countyHomeValue.textContent = "Loading...";
-        countyIncome.textContent = "Loading...";
+        countyHomeValue.textContent = loadFailed ? "Data unavailable" : "Loading...";
+        countyIncome.textContent = countyHomeValue.textContent;
         return;
     }
     const { startYear, endYear } = yearRange;
@@ -22,14 +51,17 @@ function showCountyValues(path) {
     const end = CountyDataUtils.getRecord(countyIndex, fips, endYear);
     const fmt = (record, key) => CountyDataUtils.formatUsd(record && record[key]);
 
-    if (startYear === endYear) {
+    const first = CountyDataUtils.getRecord(countyIndex,fips,startYear);
+    ['homeValueUsd','perCapitaPersonalIncomeUsd','gap'].forEach((metric,i) => {
+        changeFields[i].textContent = yearRange.mode !== 'range' ? 'Choose a year range' : MapMetrics.format(MapMetrics.value(first,end,metric,true),metric,true);
+    });
+    if (yearRange.mode !== "range") {
         countyYear.textContent = endYear;
         countyHomeValue.textContent = fmt(end, "homeValueUsd");
         countyIncome.textContent = fmt(end, "perCapitaPersonalIncomeUsd");
         return;
     }
-    // Range: show the raw values at both ends; computing the change is the
-    // calculation logic's job (Gantt 3.3.1).
+    // Keep endpoint values alongside the calculated changes.
     const start = CountyDataUtils.getRecord(countyIndex, fips, startYear);
     countyYear.textContent = `${startYear} to ${endYear}`;
     countyHomeValue.textContent = `${fmt(start, "homeValueUsd")} to ${fmt(end, "homeValueUsd")}`;
@@ -38,11 +70,11 @@ function showCountyValues(path) {
 }
 
 document.addEventListener("appstatechange", event => {
-    const { startYear, endYear } = event.detail;
-    if (startYear === yearRange.startYear && endYear === yearRange.endYear) return;
+    const { mode, startYear, endYear } = event.detail;
+    if (mode === yearRange.mode && startYear === yearRange.startYear && endYear === yearRange.endYear) return;
     if (startYear === null || endYear === null) return;
-    yearRange = { startYear, endYear };
-    restoreSelectedPreview();
+    yearRange = { mode, startYear, endYear };
+    renderCountyMap();
 });
 
 function showCountyPreview(path) {
@@ -61,7 +93,8 @@ function showCountyPreview(path) {
 
     const countyCopy = path.cloneNode(true);
     countyCopy.removeAttribute("id");
-    countyCopy.style.fill = "grey";
+    for (const attr of ['tabindex','role','aria-label','aria-pressed']) countyCopy.removeAttribute(attr);
+    countyCopy.setAttribute('aria-hidden','true');
 
     previewSVG.appendChild(countyCopy);
 
@@ -69,11 +102,12 @@ function showCountyPreview(path) {
 }
 
 function clearCountyPreview() {
-    countyName.textContent = "Hover over a county";
+    countyName.textContent = "Choose a county";
     previewSVG.innerHTML = "";
     countyYear.textContent = "-";
     countyHomeValue.textContent = "-";
     countyIncome.textContent = "-";
+    changeFields.forEach(field => { field.textContent = "-"; });
 }
 
 
@@ -145,13 +179,17 @@ function restoreSelectedPreview() {
 }
 
 countyPaths.forEach(path => {
-    path.setAttribute("tabindex", "0");
+    path.setAttribute("tabindex", path === countyPaths[0] ? "0" : "-1");
     path.setAttribute("role", "button");
     path.setAttribute("aria-pressed", "false");
     path.setAttribute("aria-label", `${path.id} County`);
 
     path.addEventListener("mouseenter", () => showCountyPreview(path));
-    path.addEventListener("focus", () => showCountyPreview(path));
+    path.addEventListener("focus", () => {
+        mapSVG.querySelector('path[tabindex="0"]')?.setAttribute("tabindex", "-1");
+        path.setAttribute("tabindex", "0");
+        showCountyPreview(path);
+    });
     path.addEventListener("blur", restoreSelectedPreview);
     // Clicking the already-selected county unselects it.
     const toggleSelection = () => {
@@ -164,7 +202,12 @@ countyPaths.forEach(path => {
     };
     path.addEventListener("click", toggleSelection);
     path.addEventListener("keydown", event => {
-        if (event.key === "Enter" || event.key === " ") {
+        const steps = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+        if (steps[event.key]) {
+            event.preventDefault();
+            const index = Array.from(countyPaths).indexOf(path);
+            countyPaths[(index + steps[event.key] + countyPaths.length) % countyPaths.length].focus();
+        } else if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
             toggleSelection();
         }
@@ -192,8 +235,7 @@ async function loadCountyData() {
             console.warn(`Map county "${path.id}" has no matching entry in county-data.json`);
         }
     });
-    // Refresh the panel in case a county was selected before the data arrived.
-    restoreSelectedPreview();
+    renderCountyMap();
 
     // Read-only access for calculation and map-colouring code.
     window.CountyData = Object.freeze({
@@ -205,7 +247,10 @@ async function loadCountyData() {
 }
 
 loadCountyData().catch(error => {
+    loadFailed = true;
     console.error(error);
+    document.getElementById('map-summary').textContent = 'County data failed to load. Reload to try again.';
+    metricSelect.disabled = true;
     countyHomeValue.textContent = "Data failed to load";
     countyIncome.textContent = "Data failed to load";
 });

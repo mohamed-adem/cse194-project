@@ -113,3 +113,14 @@ input[aria-invalid="true"] {
     width: 200px;
     height: 200px;
 }
+.map-metric-controls { max-width: 360px; margin: 1rem 0; }
+#map-metric { display: block; width: 100%; padding: 0.4rem; }
+#map-color-bar { height: 16px; border: 1px solid #555; border-radius: 3px; }
+#map-legend, #map-method { font-size: 0.9rem; }
+#svg5183 path[id]:hover, #svg5183 path[id]:focus-visible { stroke: #111; stroke-width: 1.5; }
+#svg5183 path[id]:focus-visible { outline: 2px solid #005b96; }
+@media (max-width: 720px) {
+    #svg-holder { flex-direction: column; }
+    #svg5183 { width: min(400px, 100%); }
+    #controls { max-width: 100%; padding: 1rem; box-sizing: border-box; }
+}
