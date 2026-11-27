@@ -14,58 +14,131 @@
             </div>
         </header>
 
-        <div id="resource-grid" style="max-width: 800px; margin: 0 auto; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+        <div id="resource-grid" style="max-width: 800px; margin: auto; padding: 20px; margin-top: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
             <h1 style="text-align: center; color: var(--accent);">Resources</h1>
             
             <div class="resource-unit">
-                <h2><a href="#">1. CA Department of Finance (Placeholder)</a></h2>
-                <p>Data regarding average income changes for California residents.</p>
+                <h2><a href="https://data.ca.gov/@california-employment-development-department/quarterly-census-of-employment-and-wages">1. Quarterly Census of Employment and Wages</a></h2>
+                <p>Average weekly wage in California counties. Different CSV for time periods, get rid of redundant data in CSV by filtering ownership and NAICS level to 0. File Name: Avg_Wage_County_2004_2025.csv</p>
             </div>
 
             <div class="resource-unit">
-                <h2><a href="#">2. US Census Bureau (Placeholder)</a></h2>
-                <p>Demographic and housing price indices.</p>
+                <h2><a href="https://www.bea.gov/data/income-saving/personal-income-by-county">2. Personal Income by County</a></h2>
+                <p>Personal income change by year for each county, Shows the whole U.S but we can just filter for California. File Name: CAINC1_CA_1969_2024</p>
             </div>
 
             <div class="resource-unit">
-                <h2><a href="#">3. Resource #3</a></h2>
-                <p>Description description</p>
+                <h2><a href="https://apps.bea.gov/iTable/?reqid=70&step=30&isuri=1&appid=70&year_end=-1&classification=non-industry&state=0,01000&table_id=11&income_begin_year=-1&yearbegin=-1&unit_of_measure=levels&um_income=levels&table=33&year_income=2014,2013,2012&major_area=4&area=00000,01000,01033&year=2017&tableid=20&category=720&income_end_year=-1&area_type=4&area_income=47000,47035&statistic=-1#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbInN0YXRlIixbIjA2MDAwIl1dLFsibWFqb3JfYXJlYSIsIjQiXSxbInRhYmxlaWQiLCIyMCJdLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==">
+                    3. County Personal Income Summary</a></h2>
+                <p>Personal income amount for each county. Gives total amount for the whole county income it seems. We can just find the average personal income amount by dividing by what the total population of the county was that year. File Name: CAINC1_CA_1969_2024</p>
             </div>
 
             <div class="resource-unit">
-                <h2><a href="#">4. Resource #4</a></h2>
-                <p>Description description</p>
+                <h2><a href="https://fredaccount.stlouisfed.org/public/datalist/10680?pageID=1">
+                    4. California Counties - Estimate of Median Household Incomes</a></h2>
+                <p>Median household income for each county. Each county has its own graph so it will take some time to organize the data from this source. File Name: County_Median_Household_Income</p>
             </div>
 
             <div class="resource-unit">
-                <h2><a href="#">5. Resource #5</a></h2>
-                <p>Description description</p>
+                <h2><a href="https://www.realtor.com/research/data">
+                    5. California Average Listing Price</a></h2>
+                <p>Average Listing price for each county in California. They do it per month but we can add up each month to get the yearly listing price. File Name: Median_Average_Listing_House_Price</p>
             </div>
 
             <div class="resource-unit">
-                <h2><a href="#">6. Resource #6</a></h2>
-                <p>Description description</p>
+                <h2><a href="https://fred.stlouisfed.org/tags/series?t=ca%3Bcounty%3Bhousing%3Bprice+index">
+                    6. House Price Change Count </a></h2>
+                <p>Tracks the same houses in a county and sees how the price of the house changes yearly. They use an index rather than a dollar amount. Includes only 55 out of 58 counties. File Name: House_Price_Change_Coun</p>
             </div>
 
             <div class="resource-unit">
-                <h2><a href="#">7. Resource #7</a></h2>
-                <p>Description description</p>
+                <h2><a href="https://www.car.org/marketdata/data">
+                    7. Median Price of Single Homes</a></h2>
+                <p>Median price of single family homes in each county in California. Need an account to access data. FIle Name: MedianPricesofExistingHomes</p>
             </div>
 
             <div class="resource-unit">
-                <h2><a href="#">8. Resource #8</a></h2>
-                <p>Description description</p>
+                <h2><a href="https://www.fhfa.gov/data/hpi/datasets?tab=annual-data">
+                    8. HPI (House Price Index)</a></h2>
+                <p>House Price index that shows how household price has changed year by year with percentages for each county in California yearly.
+File Name: hpi_CA_County
+</p>
             </div>
 
             <div class="resource-unit">
-                <h2><a href="#">9. Resource #9</a></h2>
-                <p>Description description</p>
+                <h2><a href="https://www.zillow.com/research/data/">
+                    9. House Values based on Zillow </a></h2>
+                <p>The values of Houses based on Zillow's Home Value Index.  File Name: Zillow_County_house.csv</p>
             </div>
 
             <div class="resource-unit">
-                <h2><a href="#">10. Resource #10</a></h2>
-                <p>Description description</p>
+                <h2><a href="https://www.census.gov/data/developers/updates/new-discovery-tool.html">
+                    10. Census Data API Discovery Tool</a></h2>
+                <p>contains links to API Census data, can be used to find social, economic, demographic, and housing data, such as median household income data.</p>
             </div>
+
+            
+            <div class="resource-unit">
+                <h2><a href="https://apps.bea.gov/api/signup/">
+                    11. BEA API Sign Up</a></h2>
+                <p>signup page for Bureau of Economic Analysis API, can be used to find detailed data on per capita personal income and total personal income.</p>
+            </div>
+
+            
+            <div class="resource-unit">
+                <h2><a href="https://data.ca.gov/">
+                    12. California Datasets</a> / <a href="https://data.ca.gov/topics/housing-community-development">California Datasets for Housing</a></h2>
+                <p>page that contains thousands of datasets of information published by California state departments and organizations. Can be used to find detailed information on housing, development, and income (second link)</p>
+            </div>
+
+            
+            <div class="resource-unit">
+                <h2><a href="https://www.huduser.gov/portal/dataset/fmr-api.html">
+                    13. Huduser API Sign Up</a></h2>
+                <p>signup page for API that tracks income limits for federal housing programs and Fair Market Rent (40th Percentile Gross Rent)</p>
+            </div>
+
+
+            <div class="resource-unit">
+                <h2><a href="https://fred.stlouisfed.org/docs/api/fred/">
+                    14. FRED API Sign Up</a> / <a href="https://fred.stlouisfed.org/tags/series?t=fhfa">FRED Non-API Sign Up</a></h2>
+                <p>signup page for API that contains national, state, metropolitan statistical area (MSA), and county-level single-family home values. Non-API version for reference (second link)</p>
+            </div>
+
+            <div class="resource-unit">
+                <h2><a href="https://data.ca.gov/@california-employment-development-department">
+                    15. California Employment Datasets</a></h2>
+                <p>datasets covering employment information and quarterly census of employment and wages within the state of California. Can be used to pull wage and employment data, such as the average weekly wage per county.</p>
+            </div>
+
+            
+            <div class="resource-unit">
+                <h2><a href="https://dof.ca.gov/forecasting/demographics/estimates/e-5-population-and-housing-estimates-for-cities-counties-and-the-state-2020-2026/">
+                    16. Population and Housing Estimates Datasheet </a></h2>
+                <p>datasheet that contains the E-5 population and housing estimates, the official January 1 baseline estimates for population, total housing units, and average household size (along with other info) for California counties.</p>
+            </div>
+        </div>
+
+        
+        <div id="credits-grid" style="max-width: 800px; margin: 0 auto; padding: 20px; margin-top: 50px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+            <h1 style="text-align: center; color: var(--accent);">Credits</h1>
+            
+            <div class="person-unit">
+                <h2>Information/Sources Team
+                <a style = "font-size: .75rem;">(Luis Hernandez & Hamza Abdallah)</a></h2>
+                <p>Worked on finding suitable sources for the project and weekly project reports</p>
+            </div>
+
+            <div class="person-unit">
+                <h2>Front End Team <a style = "font-size: .75rem;">(Siddharth Panchagnula & Alexia Doan)</a></h2>
+                <p>Worked on CSS and HTML to organize and format the different pages.</p>
+            </div>
+
+            <div class="person-unit">
+                <h2>Back End Team<a style = "font-size: .75rem;">Guthry Hahm, Matthew Beaudin & Mohamed Adem</a></h2>
+                <p>Worked on Javascript to create the entire functionality for the page and map updating feature so that the website will persist in the future without reliance on our team.</p>
+            </div>
+
         </div>
     </body>
 </html>
